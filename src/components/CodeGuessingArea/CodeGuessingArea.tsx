@@ -7,17 +7,17 @@ const CodeGuessingArea = () => {
     <>
       {rows.map((row) => (
         <div className={styles.row} key={row}>
-          <div className={styles.guess}>
-            <div className="peg" />
-            <div className="peg" />
-            <div className="peg" />
-            <div className="peg" />
-          </div>
           <div className={styles.feedback}>
             <div className={styles.feedbackPeg} />
             <div className={styles.feedbackPeg} />
             <div className={styles.feedbackPeg} />
             <div className={styles.feedbackPeg} />
+          </div>
+          <div className={styles.guess}>
+            <div className="peg" />
+            <div className="peg" />
+            <div className="peg" />
+            <div className="peg" />
           </div>
         </div>
       ))}

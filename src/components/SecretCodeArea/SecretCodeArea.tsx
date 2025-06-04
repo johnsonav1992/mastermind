@@ -1,8 +1,9 @@
+import { pegColors } from '../../constants/pegColors';
 import type { Peg } from '../../types/types';
 import styles from './SecretCodeArea.module.css';
 
 const SecretCodeArea = () => {
-  const isGameInProgress = false;
+  const isGameInProgress = true;
 
   const pegs = Array.from(
     { length: 4 },
@@ -23,7 +24,7 @@ const SecretCodeArea = () => {
             <div
               key={i}
               className="peg"
-              style={{ backgroundColor: peg.color }}
+              style={{ backgroundColor: pegColors[peg.color] }}
             ></div>
           ))}
         </>
