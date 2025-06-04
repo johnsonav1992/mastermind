@@ -1,4 +1,4 @@
-export type PegColors = 'white' | 'red' | 'green' | 'blue' | 'yellow';
+export type PegColors = 'white' | 'black' | 'red' | 'green' | 'blue' | 'yellow';
 export type FeedbackColors = 'black' | 'white';
 
 export type Peg = {
