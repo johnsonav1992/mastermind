@@ -10,22 +10,6 @@
   justify-content: center;
   height: 100vh;
   gap: 1rem;
-
-  .board-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    width: 100%;
-    position: relative;
-  }
-
-  .bucket-container {
-    position: absolute;
-    right: 25%;
-    top: 50%;
-    transform: translateY(-50%);
-  }
 }
 
 .peg {
