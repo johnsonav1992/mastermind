@@ -17,13 +17,11 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
           <button
             key={color}
             className={styles.pegButton}
-            style={{ padding: 0, background: 'none', border: 'none', boxShadow: 'none' }}
-            aria-label={color + ' peg'}
             onClick={() => onPegSelect?.(color)}
           >
             <div
               className="peg"
-              style={{ backgroundColor: pegColors[color], margin: 0 }}
+              style={{ backgroundColor: pegColors[color] }}
             />
           </button>
         ))}

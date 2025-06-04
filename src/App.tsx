@@ -8,7 +8,7 @@ function App() {
       <p>Can you crack the code?</p>
       <div className="board-container">
         <GameBoard />
-        <div className="peg-container">
+        <div className="bucket-container">
           <PegBucket />
         </div>
       </div>
