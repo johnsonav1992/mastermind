@@ -2,12 +2,17 @@ import { pegColors } from '../../constants/pegColors';
 import styles from './PegBucket.module.css';
 import type { PegColors } from '../../types/types';
 import { pegStyle } from '../../styles/globalStyles';
+import type { DragEvent } from 'react';
 
 const colorNames = Object.keys(pegColors) as PegColors[];
 
 interface PegBucketProps {
 	onPegSelect?: (color: PegColors) => void;
 }
+
+const handleDragStart = (e: DragEvent<HTMLButtonElement>, color: PegColors) => {
+	e.dataTransfer.setData('pegColor', color);
+};
 
 const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 	return (
@@ -19,6 +24,8 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 						key={color}
 						className={styles.pegButton}
 						onClick={() => onPegSelect?.(color)}
+						onDragStart={(e) => handleDragStart(e, color)} // this isn't triggering
+						draggable
 					>
 						<div
 							className={pegStyle}
