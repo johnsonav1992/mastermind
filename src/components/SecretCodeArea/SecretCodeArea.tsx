@@ -6,9 +6,7 @@ import { css } from '../../../styled-system/css';
 
 const SecretCodeArea = () => {
 	const secretCode = useAtomValue(secretCodeAtom);
-	const isGameInProgress = true;
-
-	console.log({ secretCode });
+	const isGameInProgress = false;
 
 	return (
 		<div
