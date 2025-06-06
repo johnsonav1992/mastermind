@@ -2,10 +2,13 @@ import { useAtomValue } from 'jotai';
 import { pegColors } from '../../constants/pegColors';
 import styles from './SecretCodeArea.module.css';
 import { secretCodeAtom } from '../../state/atoms';
+import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 
 const SecretCodeArea = () => {
 	const secretCode = useAtomValue(secretCodeAtom);
 	const isGameInProgress = false;
+
+	console.log(secretCode);
 
 	return (
 		<div className={styles.codeRow}>
@@ -16,8 +19,8 @@ const SecretCodeArea = () => {
 					{secretCode.map((peg, i) => (
 						<div
 							key={i}
-							className={`peg ${!peg.isFilled ? 'empty' : ''}`}
-							style={{ backgroundColor: pegColors[peg.color] }}
+							className={`${pegStyle} ${!peg.isFilled ? emptyPegStyle : ''}`}
+							// style={{ backgroundColor: pegColors[peg.color] }}
 						></div>
 					))}
 				</>

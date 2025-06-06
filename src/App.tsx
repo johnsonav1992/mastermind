@@ -1,5 +1,5 @@
-import { css } from '@pigment-css/react';
 import GameBoard from './components/GameBoard/GameBoard';
+import { css } from '../styled-system/css';
 
 function App() {
 	return (
