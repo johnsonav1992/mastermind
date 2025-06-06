@@ -14,7 +14,7 @@ export const generateSecretCode = (): Peg[] => {
 
 	for (let i = 0; i < codeLength; i++) {
 		const randomColor = colors[Math.floor(Math.random() * colors.length)];
-		secretCode.push({ color: randomColor });
+		secretCode.push({ color: randomColor, isFilled: true });
 	}
 
 	return secretCode;

@@ -32,8 +32,15 @@ export const pegStyle = css({
 export const emptyPegStyle = css({
 	backgroundColor: 'rgba(0, 0, 0, 0.4) !important',
 	boxShadow:
-		'inset 0 2px 5px rgba(0, 0, 0, 0.7), inset 0 5px 10px rgba(0, 0, 0, 0.4), 3px 3px 5px rgba(0, 0, 0, 0.3)',
+		'inset 0 2px 5px rgba(0, 0, 0, 0.7), inset 0 5px 10px rgba(0, 0, 0, 0.4), 3px 3px 5px rgba(0, 0, 0, 0.3) !important',
 	border: '1px solid rgba(0, 0, 0, 0.5)',
+	_hover: {
+		cursor: 'default',
+		transform: 'none',
+		transition: 'none',
+		boxShadow:
+			'inset 0 2px 5px rgba(0, 0, 0, 0.7), inset 0 5px 10px rgba(0, 0, 0, 0.4), 3px 3px 5px rgba(0, 0, 0, 0.3) !important'
+	},
 	_after: {
 		display: 'none'
 	}

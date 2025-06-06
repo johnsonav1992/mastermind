@@ -8,6 +8,8 @@ const SecretCodeArea = () => {
 	const secretCode = useAtomValue(secretCodeAtom);
 	const isGameInProgress = false;
 
+	console.log({ secretCode });
+
 	return (
 		<div className={styles.codeRow}>
 			{isGameInProgress ? (
