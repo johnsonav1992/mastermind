@@ -1,28 +1,34 @@
+import { useAtom } from 'jotai';
+import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import styles from './CodeGuessingArea.module.css';
+import { playerRowsAtom } from '../../state/atoms';
 
 const CodeGuessingArea = () => {
-  const rows = Array.from({ length: 10 }, (_, index) => index + 1);
+	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
 
-  return (
-    <>
-      {rows.map((row) => (
-        <div className={styles.row} key={row}>
-          <div className={styles.feedback}>
-            <div className={styles.feedbackPeg} />
-            <div className={styles.feedbackPeg} />
-            <div className={styles.feedbackPeg} />
-            <div className={styles.feedbackPeg} />
-          </div>
-          <div className={styles.guess}>
-            <div className="peg" />
-            <div className="peg" />
-            <div className="peg" />
-            <div className="peg" />
-          </div>
-        </div>
-      ))}
-    </>
-  );
+	return (
+		<>
+			{playerRows.map((row, rowIndex) => (
+				<div className={styles.row} key={rowIndex}>
+					<div className={styles.feedback}>
+						<div className={styles.feedbackPeg} />
+						<div className={styles.feedbackPeg} />
+						<div className={styles.feedbackPeg} />
+						<div className={styles.feedbackPeg} />
+					</div>
+					<div className={styles.guess}>
+						{row.map((peg, pegIndex) => (
+							<div
+								key={pegIndex}
+								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle}`}
+								style={{ backgroundColor: peg.color }}
+							/>
+						))}
+					</div>
+				</div>
+			))}
+		</>
+	);
 };
 
 export default CodeGuessingArea;
