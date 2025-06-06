@@ -45,17 +45,21 @@ const GameBoard = () => {
 					onClick={startGame}
 					className={css({
 						padding: '0.75rem 1.5rem',
-						fontSize: '1rem',
+						fontSize: '1.25rem',
 						fontWeight: 'bold',
-						backgroundColor: '#4CAF50',
-						color: 'white',
-						border: 'none',
-						borderRadius: '4px',
+						backgroundImage: 'linear-gradient(45deg, #FFD700, #FFA500)',
+						color: 'black',
+						border: '3px solid #3a1d0d',
+						borderRadius: '8px',
 						cursor: 'pointer',
-						boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-						transition: 'background-color 0.3s ease',
+						boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)',
+						transition: 'all 0.2s ease',
 						_hover: {
-							backgroundColor: '#45a049'
+							backgroundImage: 'linear-gradient(45deg, #FFE44D, #FFB52E)',
+							transform: 'translateY(-2px)'
+						},
+						_active: {
+							transform: 'translateY(1px)'
 						}
 					})}
 				>
