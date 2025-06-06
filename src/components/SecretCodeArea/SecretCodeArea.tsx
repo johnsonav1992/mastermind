@@ -8,8 +8,6 @@ const SecretCodeArea = () => {
 	const secretCode = useAtomValue(secretCodeAtom);
 	const isGameInProgress = false;
 
-	console.log(secretCode);
-
 	return (
 		<div className={styles.codeRow}>
 			{isGameInProgress ? (
@@ -20,8 +18,8 @@ const SecretCodeArea = () => {
 						<div
 							key={i}
 							className={`${pegStyle} ${!peg.isFilled ? emptyPegStyle : ''}`}
-							// style={{ backgroundColor: pegColors[peg.color] }}
-						></div>
+							style={{ backgroundColor: pegColors[peg.color] }}
+						/>
 					))}
 				</>
 			)}
