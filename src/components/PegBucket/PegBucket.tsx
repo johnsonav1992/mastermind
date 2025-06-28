@@ -10,8 +10,10 @@ interface PegBucketProps {
 	onPegSelect?: (color: PegColors) => void;
 }
 
-const handleDragStart = (e: DragEvent<HTMLButtonElement>, color: PegColors) => {
+const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
 	e.dataTransfer.setData('pegColor', color);
+	e.dataTransfer.effectAllowed = 'move'; // This sets the allowed effect type
+	e.currentTarget.setAttribute('dragging', 'true');
 };
 
 const PegBucket = ({ onPegSelect }: PegBucketProps) => {
@@ -43,32 +45,14 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 				})}
 			>
 				{colorNames.map((color) => (
-					<button
+					<div
 						key={color}
-						className={css({
-							padding: '0',
-							background: 'none',
-							border: 'none',
-							boxShadow: 'none',
-							cursor: 'pointer',
-							outline: 'none',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							transition: 'transform 0.1s',
-							_active: {
-								transform: 'scale(0.92)'
-							}
-						})}
+						className={pegStyle}
+						style={{ backgroundColor: pegColors[color] }}
 						onClick={() => onPegSelect?.(color)}
-						onDragStart={(e) => handleDragStart(e, color)} // this isn't triggering
+						onDragStart={(e) => handleDragStart(e, color)}
 						draggable
-					>
-						<div
-							className={pegStyle}
-							style={{ backgroundColor: pegColors[color] }}
-						/>
-					</button>
+					/>
 				))}
 			</div>
 		</div>

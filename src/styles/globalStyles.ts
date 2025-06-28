@@ -14,7 +14,8 @@ export const pegStyle = css({
 		boxShadow:
 			'inset 0 0 5px #000, 0 1px 2px #222, 3px 3px 6px rgba(0, 0, 0, 0.7)',
 		transform: 'scale(1.2)',
-		transition: 'transform 0.2s ease-in-out'
+		transition: 'transform 0.2s ease-in-out',
+		overflow: 'hidden'
 	},
 	_after: {
 		content: "''",

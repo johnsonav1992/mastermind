@@ -6,6 +6,11 @@ import { playerRowsAtom } from '../../state/atoms';
 const CodeGuessingArea = () => {
 	const playerRows = useAtomValue(playerRowsAtom);
 
+	const onDragOverPegHole: React.DragEventHandler = (e) => {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'move';
+	};
+
 	return (
 		<>
 			{playerRows.map((row, rowIndex) => (
@@ -55,7 +60,14 @@ const CodeGuessingArea = () => {
 							<div
 								key={pegIndex}
 								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle}`}
-								style={{ backgroundColor: peg.color }}
+								style={{ backgroundColor: peg.color, cursor: 'pointer' }}
+								onDragOver={onDragOverPegHole}
+								onDrop={(e) => {
+									console.log(e);
+									e.preventDefault();
+									const color = e.dataTransfer.getData('pegColor');
+									console.log(color);
+								}}
 							/>
 						))}
 					</div>
