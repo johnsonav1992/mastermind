@@ -80,10 +80,20 @@ const CodeGuessingArea = () => {
 						{row.map((peg, pegIndex) => (
 							<div
 								key={pegIndex}
-								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle}`}
+								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle} ${css(
+									{
+										_hover: {
+											cursor: 'default !important',
+											boxShadow:
+												'inset 0 0 3px #000, 0 1px 2px #222, 3px 3px 6px rgba(0, 0, 0, 0.5) !important',
+											transform: 'none !important',
+											transition: 'none !important'
+										}
+									}
+								)}`}
 								style={{
 									backgroundColor: pegColors[peg.color],
-									cursor: 'pointer'
+									cursor: 'default'
 								}}
 								onDragOver={onDragOverPegHole}
 								onDrop={(e) => onDropIntoPegHole(e, rowIndex, pegIndex)}
