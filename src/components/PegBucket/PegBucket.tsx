@@ -12,8 +12,6 @@ interface PegBucketProps {
 
 const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
 	e.dataTransfer.setData('pegColor', color);
-	e.dataTransfer.effectAllowed = 'move'; // This sets the allowed effect type
-	e.currentTarget.setAttribute('dragging', 'true');
 };
 
 const PegBucket = ({ onPegSelect }: PegBucketProps) => {

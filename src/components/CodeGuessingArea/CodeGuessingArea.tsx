@@ -1,14 +1,34 @@
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
 import { playerRowsAtom } from '../../state/atoms';
+import type { PegColors } from '../../types/types';
 
 const CodeGuessingArea = () => {
-	const playerRows = useAtomValue(playerRowsAtom);
+	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
 
 	const onDragOverPegHole: React.DragEventHandler = (e) => {
 		e.preventDefault();
 		e.dataTransfer.dropEffect = 'move';
+	};
+
+	const onDropIntoPegHole = (
+		e: React.DragEvent<HTMLDivElement>,
+		rowIndex: number,
+		pegIndex: number
+	) => {
+		e.preventDefault();
+		const color = e.dataTransfer.getData('pegColor') as PegColors;
+
+		setPlayerRows((prevRows) => {
+			return prevRows.map((row, rIndex) =>
+				rowIndex === rIndex
+					? row.map((peg, pIndex) =>
+							pegIndex === pIndex ? { ...peg, color, isFilled: true } : peg
+						)
+					: row
+			);
+		});
 	};
 
 	return (
@@ -62,12 +82,7 @@ const CodeGuessingArea = () => {
 								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle}`}
 								style={{ backgroundColor: peg.color, cursor: 'pointer' }}
 								onDragOver={onDragOverPegHole}
-								onDrop={(e) => {
-									console.log(e);
-									e.preventDefault();
-									const color = e.dataTransfer.getData('pegColor');
-									console.log(color);
-								}}
+								onDrop={(e) => onDropIntoPegHole(e, rowIndex, pegIndex)}
 							/>
 						))}
 					</div>
