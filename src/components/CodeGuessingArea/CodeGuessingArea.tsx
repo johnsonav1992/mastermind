@@ -3,6 +3,7 @@ import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
 import { playerRowsAtom } from '../../state/atoms';
 import type { PegColors } from '../../types/types';
+import { pegColors } from '../../constants/pegColors';
 
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
@@ -80,7 +81,10 @@ const CodeGuessingArea = () => {
 							<div
 								key={pegIndex}
 								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle}`}
-								style={{ backgroundColor: peg.color, cursor: 'pointer' }}
+								style={{
+									backgroundColor: pegColors[peg.color],
+									cursor: 'pointer'
+								}}
 								onDragOver={onDragOverPegHole}
 								onDrop={(e) => onDropIntoPegHole(e, rowIndex, pegIndex)}
 							/>
