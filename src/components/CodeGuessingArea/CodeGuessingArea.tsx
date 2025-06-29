@@ -1,5 +1,9 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
+import { useAtom, useAtomValue } from 'jotai';
+import {
+	emptyPegStyle,
+	pegStyle,
+	emptyFeedbackPegStyle
+} from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
 import {
 	activeGuessingRowIndexAtom,
@@ -8,15 +12,19 @@ import {
 	secretCodeAtom
 } from '../../state/atoms';
 import type { PegColors } from '../../types/types';
-import { pegColors } from '../../constants/pegColors';
-import { compareGuessedCodeToSecretCode } from '../../utils/secretCodeUtils';
+import { feedbackPegColors, pegColors } from '../../constants/pegColors';
+import {
+	compareGuessedCodeToSecretCode,
+	getFeedbackPegsForRow
+} from '../../utils/secretCodeUtils';
 
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
 	const [feedbackRows, setFeedbackRows] = useAtom(feedbackRowsAtom);
+	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(
+		activeGuessingRowIndexAtom
+	);
 	const secretCode = useAtomValue(secretCodeAtom);
-	const activeGuessingRowIndex = useAtomValue(activeGuessingRowIndexAtom);
-	const setActiveGuessingRowIndex = useSetAtom(activeGuessingRowIndexAtom);
 
 	const onDragOverPegHole: React.DragEventHandler = (e) => {
 		e.preventDefault();
@@ -48,7 +56,11 @@ const CodeGuessingArea = () => {
 
 				const howdYaDo = compareGuessedCodeToSecretCode(currentRow, secretCode);
 
-				console.log(howdYaDo);
+				setFeedbackRows((prevFeedbackRows) =>
+					prevFeedbackRows.map((row, rIndex) =>
+						rIndex === rowIndex ? getFeedbackPegsForRow(howdYaDo) : row
+					)
+				);
 			}
 
 			return updatedRows;
@@ -81,7 +93,7 @@ const CodeGuessingArea = () => {
 							paddingRight: '4px'
 						})}
 					>
-						{feedbackRows[rowIndex].map((_, index) => (
+						{feedbackRows[rowIndex].map((feedbackPeg, index) => (
 							<div
 								key={index}
 								className={`${css({
@@ -90,7 +102,16 @@ const CodeGuessingArea = () => {
 									borderRadius: '50%',
 									position: 'relative',
 									overflow: 'hidden'
-								})} ${emptyPegStyle}`}
+								})} ${feedbackPeg.isFilled ? '' : emptyFeedbackPegStyle}`}
+								style={{
+									backgroundColor: feedbackPeg.isFilled
+										? feedbackPegColors[
+												feedbackPeg.correctColorAndPosition
+													? 'correctColorAndPosition'
+													: 'correctColorWrongPosition'
+											]
+										: undefined
+								}}
 							/>
 						))}
 					</div>

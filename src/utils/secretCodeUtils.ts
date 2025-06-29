@@ -40,3 +40,21 @@ export const compareGuessedCodeToSecretCode = (
 
 	return { correctColorAndPosition, correctColorWrongPosition };
 };
+
+export const getFeedbackPegsForRow = (feedbackResult: {
+	correctColorAndPosition: number;
+	correctColorWrongPosition: number;
+}) => {
+	return Array.from({ length: 4 }, (_, pegIndex) => ({
+		isFilled:
+			pegIndex <
+			feedbackResult.correctColorAndPosition +
+				feedbackResult.correctColorWrongPosition,
+		correctColorAndPosition: pegIndex < feedbackResult.correctColorAndPosition,
+		correctColorWrongPosition:
+			pegIndex >= feedbackResult.correctColorAndPosition &&
+			pegIndex <
+				feedbackResult.correctColorAndPosition +
+					feedbackResult.correctColorWrongPosition
+	}));
+};

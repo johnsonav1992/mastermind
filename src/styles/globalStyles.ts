@@ -46,3 +46,20 @@ export const emptyPegStyle = css({
 		display: 'none'
 	}
 });
+
+export const emptyFeedbackPegStyle = css({
+	backgroundColor: 'rgba(0, 0, 0, 0.2) !important',
+	boxShadow:
+		'inset 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2) !important',
+	border: '1px solid rgba(0, 0, 0, 0.3)',
+	_hover: {
+		cursor: 'default',
+		transform: 'none',
+		transition: 'none',
+		boxShadow:
+			'inset 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2) !important'
+	},
+	_after: {
+		display: 'none'
+	}
+});

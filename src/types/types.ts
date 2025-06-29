@@ -9,5 +9,7 @@ export type Peg = {
 };
 
 export type FeedbackPeg = {
-	color: FeedbackColors;
+	isFilled?: boolean;
+	correctColorAndPosition: boolean;
+	correctColorWrongPosition: boolean;
 };
