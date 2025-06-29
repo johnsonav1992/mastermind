@@ -23,19 +23,19 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 				alignItems: 'center',
 				background: '#f5e6c8',
 				borderRadius: '10px',
-				padding: '24px 10px 24px 10px',
+				padding: '1rem',
 				boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
 				minWidth: '90px',
 				height: 'fit-content',
 				justifyContent: 'flex-start'
 			})}
 		>
-			<h3 style={{ marginBottom: 18 }}>Choose a Peg</h3>
+			<h3 style={{ marginBottom: 12 }}>Choose a Peg</h3>
 			<div
 				className={css({
 					display: 'grid',
-					gridTemplateColumns: 'repeat(2, 1fr)',
-					gridTemplateRows: 'repeat(3, auto)',
+					gridTemplateColumns: 'repeat(3, 1fr)',
+					gridTemplateRows: 'repeat(2, auto)',
 					gap: '18px',
 					marginTop: '0',
 					alignItems: 'center',
