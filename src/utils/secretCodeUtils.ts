@@ -1,4 +1,3 @@
-import { MAX_GUESSES } from '../constants/secretCodeConstants';
 import type { GameState, HowdYaDoResult, Peg, PegColors } from '../types/types';
 
 export const generateSecretCode = (): Peg[] => {
@@ -25,21 +24,39 @@ export const compareGuessedCodeToSecretCode = (
 	guessedCode: Peg[],
 	secretCode: Peg[]
 ): HowdYaDoResult => {
-	let correctColorAndPosition = 0;
-	let correctColorWrongPosition = 0;
+	const guessedColors = guessedCode.map((peg) => peg.color);
+	const secretColors = secretCode.map((peg) => peg.color);
 
-	const secretCodeColors = secretCode.map((peg) => peg.color);
-	const guessedCodeColors = guessedCode.map((peg) => peg.color);
+	const correctColorAndPosition = guessedColors.filter(
+		(color, position) => color === secretColors[position]
+	).length;
 
-	guessedCodeColors.forEach((color, index) => {
-		if (color === secretCodeColors[index]) {
-			correctColorAndPosition++;
-		} else if (secretCodeColors.includes(color)) {
-			correctColorWrongPosition++;
+	const unpairedGuessedColors: Record<string, number> = {};
+	const unpairedSecretColors: Record<string, number> = {};
+
+	guessedColors.forEach((color, position) => {
+		if (color !== secretColors[position]) {
+			unpairedGuessedColors[color] = (unpairedGuessedColors[color] || 0) + 1;
 		}
 	});
 
-	return { correctColorAndPosition, correctColorWrongPosition };
+	secretColors.forEach((color, position) => {
+		if (color !== guessedColors[position]) {
+			unpairedSecretColors[color] = (unpairedSecretColors[color] || 0) + 1;
+		}
+	});
+
+	const correctColorWrongPosition = Object.keys(unpairedGuessedColors).reduce(
+		(total, color) =>
+			total +
+			Math.min(unpairedGuessedColors[color], unpairedSecretColors[color] || 0),
+		0
+	);
+
+	return {
+		correctColorAndPosition,
+		correctColorWrongPosition
+	};
 };
 
 export const getFeedbackPegsForCurrentGuessingRow = (feedbackResult: {
@@ -66,7 +83,7 @@ export const checkGameState = (
 ): GameState => {
 	if (lastFeedback.correctColorAndPosition === 4) return 'won';
 
-	if (activeGuessingRowIndex >= MAX_GUESSES) return 'lost';
+	if (activeGuessingRowIndex <= 0) return 'lost';
 
 	return 'playing';
 };

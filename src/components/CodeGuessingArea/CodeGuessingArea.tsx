@@ -34,6 +34,8 @@ const CodeGuessingArea = () => {
 		e.dataTransfer.dropEffect = 'move';
 	};
 
+	console.log(gameState);
+
 	const onDropIntoPegHole = (
 		e: React.DragEvent<HTMLDivElement>,
 		rowIndex: number,

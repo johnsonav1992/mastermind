@@ -3,6 +3,7 @@ import CodeGuessingArea from '../CodeGuessingArea/CodeGuessingArea';
 import PegBucket from '../PegBucket/PegBucket';
 import SecretCodeArea from '../SecretCodeArea/SecretCodeArea';
 import {
+	activeGuessingRowIndexAtom,
 	defaultFeedbackRows,
 	defaultPlayerRows,
 	feedbackRowsAtom,
@@ -12,19 +13,24 @@ import {
 } from '../../state/atoms';
 import { generateSecretCode } from '../../utils/secretCodeUtils';
 import { css } from '../../../styled-system/css';
+import { MAX_GUESSES } from '../../constants/secretCodeConstants';
 
 const GameBoard = () => {
 	const [gameState, setGameState] = useAtom(gameStateAtom);
 	const setPlayerRows = useSetAtom(playerRowsAtom);
 	const setFeedbackRows = useSetAtom(feedbackRowsAtom);
 	const setSecretCode = useSetAtom(secretCodeAtom);
+	const setActiveGuessingRowIndex = useSetAtom(activeGuessingRowIndexAtom);
 
 	const startGame = () => {
 		setGameState('playing');
 		setSecretCode(generateSecretCode());
 		setPlayerRows(defaultPlayerRows);
 		setFeedbackRows(defaultFeedbackRows);
+		setActiveGuessingRowIndex(MAX_GUESSES - 1);
 	};
+
+	console.log(gameState);
 
 	return (
 		<div
