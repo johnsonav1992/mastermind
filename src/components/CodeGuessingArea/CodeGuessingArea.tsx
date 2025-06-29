@@ -1,12 +1,13 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
-import { playerRowsAtom } from '../../state/atoms';
+import { activeGuessingRowIndexAtom, playerRowsAtom } from '../../state/atoms';
 import type { PegColors } from '../../types/types';
 import { pegColors } from '../../constants/pegColors';
 
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
+	const activeGuessingRowIndex = useAtomValue(activeGuessingRowIndexAtom);
 
 	const onDragOverPegHole: React.DragEventHandler = (e) => {
 		e.preventDefault();
@@ -44,7 +45,8 @@ const CodeGuessingArea = () => {
 						backgroundColor: '#5c331260',
 						padding: '6px 4px',
 						borderRadius: '6px',
-						boxShadow: 'inset 0 -2px 4px rgba(0, 0, 0, 0.4)'
+						boxShadow: 'inset 0 -2px 4px rgba(0, 0, 0, 0.4)',
+						pointerEvents: rowIndex !== activeGuessingRowIndex ? 'none' : 'auto'
 					})}
 					key={rowIndex}
 				>

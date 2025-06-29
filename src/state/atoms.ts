@@ -24,3 +24,5 @@ export const playerRowsAtom = atom<Peg[][]>(
 		}))
 	)
 );
+
+export const activeGuessingRowIndexAtom = atom(MAX_GUESSES - 1);
