@@ -66,7 +66,7 @@ export const checkGameState = (
 ): GameState => {
 	if (lastFeedback.correctColorAndPosition === 4) return 'won';
 
-	if (activeGuessingRowIndex > MAX_GUESSES) return 'lost';
+	if (activeGuessingRowIndex >= MAX_GUESSES) return 'lost';
 
 	return 'playing';
 };

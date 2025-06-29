@@ -1,7 +1,11 @@
 import GameBoard from './components/GameBoard/GameBoard';
 import { css } from '../styled-system/css';
+import { useAtomValue } from 'jotai';
+import { gameStateAtom } from './state/atoms';
 
 function App() {
+	const gameState = useAtomValue(gameStateAtom);
+
 	return (
 		<div
 			className={css({
@@ -49,7 +53,11 @@ function App() {
 					maxWidth: '95%'
 				})}
 			>
-				Can you crack the code?
+				{gameState === 'won'
+					? '🎉 Congratulations! You cracked the code!'
+					: gameState === 'lost'
+						? '💀 Game Over! Better luck next time!'
+						: 'Can you crack the code?'}
 			</p>
 			<GameBoard />
 		</div>

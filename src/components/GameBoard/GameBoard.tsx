@@ -2,17 +2,28 @@ import { useAtom, useSetAtom } from 'jotai';
 import CodeGuessingArea from '../CodeGuessingArea/CodeGuessingArea';
 import PegBucket from '../PegBucket/PegBucket';
 import SecretCodeArea from '../SecretCodeArea/SecretCodeArea';
-import { gameStateAtom, secretCodeAtom } from '../../state/atoms';
+import {
+	defaultFeedbackRows,
+	defaultPlayerRows,
+	feedbackRowsAtom,
+	gameStateAtom,
+	playerRowsAtom,
+	secretCodeAtom
+} from '../../state/atoms';
 import { generateSecretCode } from '../../utils/secretCodeUtils';
 import { css } from '../../../styled-system/css';
 
 const GameBoard = () => {
 	const [gameState, setGameState] = useAtom(gameStateAtom);
+	const setPlayerRows = useSetAtom(playerRowsAtom);
+	const setFeedbackRows = useSetAtom(feedbackRowsAtom);
 	const setSecretCode = useSetAtom(secretCodeAtom);
 
 	const startGame = () => {
 		setGameState('playing');
 		setSecretCode(generateSecretCode());
+		setPlayerRows(defaultPlayerRows);
+		setFeedbackRows(defaultFeedbackRows);
 	};
 
 	return (
@@ -40,7 +51,7 @@ const GameBoard = () => {
 				<SecretCodeArea />
 				<CodeGuessingArea />
 			</div>
-			{gameState === 'notStarted' ? (
+			{gameState !== 'playing' ? (
 				<button
 					onClick={startGame}
 					className={css({
@@ -63,7 +74,7 @@ const GameBoard = () => {
 						}
 					})}
 				>
-					Start Game
+					{gameState === 'notStarted' ? 'Start Game' : 'Play Again'}
 				</button>
 			) : (
 				<PegBucket />

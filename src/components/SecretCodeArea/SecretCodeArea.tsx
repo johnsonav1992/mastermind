@@ -43,7 +43,18 @@ const SecretCodeArea = () => {
 					{secretCode.map((peg, i) => (
 						<div
 							key={i}
-							className={`${pegStyle} ${!peg.isFilled ? emptyPegStyle : ''}`}
+							className={`${pegStyle} ${!peg.isFilled ? emptyPegStyle : ''} ${css(
+								{
+									pointerEvents: 'none',
+									_hover: {
+										cursor: 'default !important',
+										boxShadow:
+											'inset 0 0 3px #000, 0 1px 2px #222, 3px 3px 6px rgba(0, 0, 0, 0.5) !important',
+										transform: 'none !important',
+										transition: 'none !important'
+									}
+								}
+							)}`}
 							style={{ backgroundColor: pegColors[peg.color] }}
 						/>
 					))}
