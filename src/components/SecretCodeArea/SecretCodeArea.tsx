@@ -1,12 +1,14 @@
 import { useAtomValue } from 'jotai';
 import { pegColors } from '../../constants/pegColors';
-import { secretCodeAtom } from '../../state/atoms';
+import { gameStateAtom, secretCodeAtom } from '../../state/atoms';
 import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
 
 const SecretCodeArea = () => {
 	const secretCode = useAtomValue(secretCodeAtom);
-	const isGameInProgress = false;
+	const gameState = useAtomValue(gameStateAtom);
+	const isGameInProgress =
+		gameState === 'playing' || gameState === 'notStarted';
 
 	return (
 		<div

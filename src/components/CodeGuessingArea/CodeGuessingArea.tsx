@@ -58,9 +58,12 @@ const CodeGuessingArea = () => {
 				setActiveGuessingRowIndex(rowIndex - 1);
 
 				const howdYaDo = compareGuessedCodeToSecretCode(currentRow, secretCode);
-				const didYaWinOrLose = checkGameState(howdYaDo, activeGuessingRowIndex);
+				const didYaWinOrLoseYet = checkGameState(
+					howdYaDo,
+					activeGuessingRowIndex
+				);
 
-				setGameState(didYaWinOrLose);
+				setGameState(didYaWinOrLoseYet);
 
 				setFeedbackRows((prevFeedbackRows) =>
 					prevFeedbackRows.map((row, rIndex) =>
