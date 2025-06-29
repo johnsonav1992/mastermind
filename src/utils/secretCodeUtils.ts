@@ -1,4 +1,5 @@
-import type { Peg, PegColors } from '../types/types';
+import { MAX_GUESSES } from '../constants/secretCodeConstants';
+import type { GameState, HowdYaDoResult, Peg, PegColors } from '../types/types';
 
 export const generateSecretCode = (): Peg[] => {
 	const colors: PegColors[] = [
@@ -23,7 +24,7 @@ export const generateSecretCode = (): Peg[] => {
 export const compareGuessedCodeToSecretCode = (
 	guessedCode: Peg[],
 	secretCode: Peg[]
-): { correctColorAndPosition: number; correctColorWrongPosition: number } => {
+): HowdYaDoResult => {
 	let correctColorAndPosition = 0;
 	let correctColorWrongPosition = 0;
 
@@ -57,4 +58,15 @@ export const getFeedbackPegsForCurrentGuessingRow = (feedbackResult: {
 				feedbackResult.correctColorAndPosition +
 					feedbackResult.correctColorWrongPosition
 	}));
+};
+
+export const checkGameState = (
+	lastFeedback: HowdYaDoResult,
+	activeGuessingRowIndex: number
+): GameState => {
+	if (lastFeedback.correctColorAndPosition === 4) return 'won';
+
+	if (activeGuessingRowIndex > MAX_GUESSES) return 'lost';
+
+	return 'playing';
 };

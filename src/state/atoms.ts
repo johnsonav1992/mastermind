@@ -1,13 +1,11 @@
 import { atom } from 'jotai';
-import type { FeedbackPeg, Length, Peg } from '../types/types';
+import type { FeedbackPeg, GameState, Length, Peg } from '../types/types';
 import {
 	MAX_GUESSES,
 	SECRET_CODE_LENGTH
 } from '../constants/secretCodeConstants';
 
-export const gameStateAtom = atom<'notStarted' | 'playing' | 'won' | 'lost'>(
-	'notStarted'
-);
+export const gameStateAtom = atom<GameState>('notStarted');
 
 export const secretCodeAtom = atom<Peg[]>(
 	Array.from<Length, Peg>({ length: SECRET_CODE_LENGTH }, () => ({

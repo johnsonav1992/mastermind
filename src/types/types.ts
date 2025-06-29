@@ -2,6 +2,7 @@ export type Length = { length: number };
 
 export type PegColors = 'white' | 'black' | 'red' | 'green' | 'blue' | 'yellow';
 export type FeedbackColors = 'black' | 'white';
+export type GameState = 'notStarted' | 'playing' | 'won' | 'lost';
 
 export type Peg = {
 	color: PegColors;
@@ -12,4 +13,9 @@ export type FeedbackPeg = {
 	isFilled?: boolean;
 	correctColorAndPosition: boolean;
 	correctColorWrongPosition: boolean;
+};
+
+export type HowdYaDoResult = {
+	correctColorAndPosition: number;
+	correctColorWrongPosition: number;
 };

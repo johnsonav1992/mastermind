@@ -8,12 +8,14 @@ import { css } from '../../../styled-system/css';
 import {
 	activeGuessingRowIndexAtom,
 	feedbackRowsAtom,
+	gameStateAtom,
 	playerRowsAtom,
 	secretCodeAtom
 } from '../../state/atoms';
 import type { PegColors } from '../../types/types';
 import { feedbackPegColors, pegColors } from '../../constants/pegColors';
 import {
+	checkGameState,
 	compareGuessedCodeToSecretCode,
 	getFeedbackPegsForCurrentGuessingRow
 } from '../../utils/secretCodeUtils';
@@ -21,6 +23,7 @@ import {
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
 	const [feedbackRows, setFeedbackRows] = useAtom(feedbackRowsAtom);
+	const [gameState, setGameState] = useAtom(gameStateAtom);
 	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(
 		activeGuessingRowIndexAtom
 	);
@@ -55,6 +58,9 @@ const CodeGuessingArea = () => {
 				setActiveGuessingRowIndex(rowIndex - 1);
 
 				const howdYaDo = compareGuessedCodeToSecretCode(currentRow, secretCode);
+				const didYaWinOrLose = checkGameState(howdYaDo, activeGuessingRowIndex);
+
+				setGameState(didYaWinOrLose);
 
 				setFeedbackRows((prevFeedbackRows) =>
 					prevFeedbackRows.map((row, rIndex) =>
@@ -82,7 +88,10 @@ const CodeGuessingArea = () => {
 						padding: '6px 4px',
 						borderRadius: '6px',
 						boxShadow: 'inset 0 -2px 4px rgba(0, 0, 0, 0.4)',
-						pointerEvents: rowIndex !== activeGuessingRowIndex ? 'none' : 'auto'
+						pointerEvents:
+							rowIndex !== activeGuessingRowIndex || gameState !== 'playing'
+								? 'none'
+								: 'auto'
 					})}
 					key={rowIndex}
 				>
