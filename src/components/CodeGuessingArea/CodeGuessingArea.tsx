@@ -15,7 +15,7 @@ import type { PegColors } from '../../types/types';
 import { feedbackPegColors, pegColors } from '../../constants/pegColors';
 import {
 	compareGuessedCodeToSecretCode,
-	getFeedbackPegsForRow
+	getFeedbackPegsForCurrentGuessingRow
 } from '../../utils/secretCodeUtils';
 
 const CodeGuessingArea = () => {
@@ -58,7 +58,9 @@ const CodeGuessingArea = () => {
 
 				setFeedbackRows((prevFeedbackRows) =>
 					prevFeedbackRows.map((row, rIndex) =>
-						rIndex === rowIndex ? getFeedbackPegsForRow(howdYaDo) : row
+						rIndex === rowIndex
+							? getFeedbackPegsForCurrentGuessingRow(howdYaDo)
+							: row
 					)
 				);
 			}

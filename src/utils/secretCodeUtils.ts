@@ -41,7 +41,7 @@ export const compareGuessedCodeToSecretCode = (
 	return { correctColorAndPosition, correctColorWrongPosition };
 };
 
-export const getFeedbackPegsForRow = (feedbackResult: {
+export const getFeedbackPegsForCurrentGuessingRow = (feedbackResult: {
 	correctColorAndPosition: number;
 	correctColorWrongPosition: number;
 }) => {
