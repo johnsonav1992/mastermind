@@ -30,8 +30,6 @@ const GameBoard = () => {
 		setActiveGuessingRowIndex(MAX_GUESSES - 1);
 	};
 
-	console.log(gameState);
-
 	return (
 		<div
 			className={css({
