@@ -30,7 +30,7 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 				justifyContent: 'flex-start'
 			})}
 		>
-			<h3 style={{ marginBottom: 12 }}>Choose a Peg</h3>
+			<h3 style={{ marginBottom: 12, fontWeight: 600 }}>Choose a Peg</h3>
 			<div
 				className={css({
 					display: 'grid',
