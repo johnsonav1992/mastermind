@@ -1,13 +1,22 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { emptyPegStyle, pegStyle } from '../../styles/globalStyles';
 import { css } from '../../../styled-system/css';
-import { activeGuessingRowIndexAtom, playerRowsAtom } from '../../state/atoms';
+import {
+	activeGuessingRowIndexAtom,
+	feedbackRowsAtom,
+	playerRowsAtom,
+	secretCodeAtom
+} from '../../state/atoms';
 import type { PegColors } from '../../types/types';
 import { pegColors } from '../../constants/pegColors';
+import { compareGuessedCodeToSecretCode } from '../../utils/secretCodeUtils';
 
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
+	const [feedbackRows, setFeedbackRows] = useAtom(feedbackRowsAtom);
+	const secretCode = useAtomValue(secretCodeAtom);
 	const activeGuessingRowIndex = useAtomValue(activeGuessingRowIndexAtom);
+	const setActiveGuessingRowIndex = useSetAtom(activeGuessingRowIndexAtom);
 
 	const onDragOverPegHole: React.DragEventHandler = (e) => {
 		e.preventDefault();
@@ -23,13 +32,26 @@ const CodeGuessingArea = () => {
 		const color = e.dataTransfer.getData('pegColor') as PegColors;
 
 		setPlayerRows((prevRows) => {
-			return prevRows.map((row, rIndex) =>
+			const updatedRows = prevRows.map((row, rIndex) =>
 				rowIndex === rIndex
 					? row.map((peg, pIndex) =>
 							pegIndex === pIndex ? { ...peg, color, isFilled: true } : peg
 						)
 					: row
 			);
+
+			const currentRow = updatedRows[rowIndex];
+			const isRowComplete = currentRow.every((peg) => peg.isFilled);
+
+			if (isRowComplete) {
+				setActiveGuessingRowIndex(rowIndex - 1);
+
+				const howdYaDo = compareGuessedCodeToSecretCode(currentRow, secretCode);
+
+				console.log(howdYaDo);
+			}
+
+			return updatedRows;
 		});
 	};
 
@@ -59,16 +81,16 @@ const CodeGuessingArea = () => {
 							paddingRight: '4px'
 						})}
 					>
-						{Array.from({ length: 4 }).map((_, index) => (
+						{feedbackRows[rowIndex].map((_, index) => (
 							<div
 								key={index}
-								className={css({
+								className={`${css({
 									width: '10px',
 									height: '10px',
-									backgroundColor: '#ddd',
 									borderRadius: '50%',
-									boxShadow: 'inset 0 0 2px #000'
-								})}
+									position: 'relative',
+									overflow: 'hidden'
+								})} ${emptyPegStyle}`}
 							/>
 						))}
 					</div>

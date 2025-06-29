@@ -25,4 +25,13 @@ export const playerRowsAtom = atom<Peg[][]>(
 	)
 );
 
+export const feedbackRowsAtom = atom<Peg[][]>(
+	Array.from<Length, Peg[]>(Array(MAX_GUESSES), () =>
+		Array.from<Length, Peg>({ length: SECRET_CODE_LENGTH }, () => ({
+			color: 'black',
+			isFilled: false
+		}))
+	)
+);
+
 export const activeGuessingRowIndexAtom = atom(MAX_GUESSES - 1);

@@ -19,3 +19,24 @@ export const generateSecretCode = (): Peg[] => {
 
 	return secretCode;
 };
+
+export const compareGuessedCodeToSecretCode = (
+	guessedCode: Peg[],
+	secretCode: Peg[]
+): { correctColorAndPosition: number; correctColorWrongPosition: number } => {
+	let correctColorAndPosition = 0;
+	let correctColorWrongPosition = 0;
+
+	const secretCodeColors = secretCode.map((peg) => peg.color);
+	const guessedCodeColors = guessedCode.map((peg) => peg.color);
+
+	guessedCodeColors.forEach((color, index) => {
+		if (color === secretCodeColors[index]) {
+			correctColorAndPosition++;
+		} else if (secretCodeColors.includes(color)) {
+			correctColorWrongPosition++;
+		}
+	});
+
+	return { correctColorAndPosition, correctColorWrongPosition };
+};
