@@ -1,34 +1,13 @@
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import CodeGuessingArea from '../CodeGuessingArea/CodeGuessingArea';
 import PegBucket from '../PegBucket/PegBucket';
 import SecretCodeArea from '../SecretCodeArea/SecretCodeArea';
-import {
-	activeGuessingRowIndexAtom,
-	defaultFeedbackRows,
-	defaultPlayerRows,
-	feedbackRowsAtom,
-	gameStateAtom,
-	playerRowsAtom,
-	secretCodeAtom
-} from '../../state/atoms';
-import { generateSecretCode } from '../../utils/secretCodeUtils';
+import { gameStateAtom, useStartNewGame } from '../../state/atoms';
 import { css } from '../../../styled-system/css';
-import { MAX_GUESSES } from '../../constants/secretCodeConstants';
 
 const GameBoard = () => {
-	const [gameState, setGameState] = useAtom(gameStateAtom);
-	const setPlayerRows = useSetAtom(playerRowsAtom);
-	const setFeedbackRows = useSetAtom(feedbackRowsAtom);
-	const setSecretCode = useSetAtom(secretCodeAtom);
-	const setActiveGuessingRowIndex = useSetAtom(activeGuessingRowIndexAtom);
-
-	const startGame = () => {
-		setGameState('playing');
-		setSecretCode(generateSecretCode());
-		setPlayerRows(defaultPlayerRows);
-		setFeedbackRows(defaultFeedbackRows);
-		setActiveGuessingRowIndex(MAX_GUESSES - 1);
-	};
+	const gameState = useAtomValue(gameStateAtom);
+	const startGame = useStartNewGame();
 
 	return (
 		<div

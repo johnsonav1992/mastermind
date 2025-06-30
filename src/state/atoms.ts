@@ -1,9 +1,10 @@
-import { atom } from 'jotai';
+import { atom, useSetAtom } from 'jotai';
 import type { FeedbackPeg, GameState, Length, Peg } from '../types/types';
 import {
 	MAX_GUESSES,
 	SECRET_CODE_LENGTH
 } from '../constants/secretCodeConstants';
+import { generateSecretCode } from '../utils/secretCodeUtils';
 
 export const defaultPlayerRows = Array.from<Length, Peg[]>(
 	Array(MAX_GUESSES),
@@ -35,3 +36,19 @@ export const secretCodeAtom = atom<Peg[]>(
 export const playerRowsAtom = atom<Peg[][]>(defaultPlayerRows);
 export const feedbackRowsAtom = atom<FeedbackPeg[][]>(defaultFeedbackRows);
 export const activeGuessingRowIndexAtom = atom(MAX_GUESSES - 1);
+
+export const useStartNewGame = () => {
+	const setGameState = useSetAtom(gameStateAtom);
+	const setSecretCode = useSetAtom(secretCodeAtom);
+	const setPlayerRows = useSetAtom(playerRowsAtom);
+	const setFeedbackRows = useSetAtom(feedbackRowsAtom);
+	const setActiveGuessingRowIndex = useSetAtom(activeGuessingRowIndexAtom);
+
+	return () => {
+		setGameState('playing');
+		setSecretCode(generateSecretCode());
+		setPlayerRows(defaultPlayerRows);
+		setFeedbackRows(defaultFeedbackRows);
+		setActiveGuessingRowIndex(MAX_GUESSES - 1);
+	};
+};
