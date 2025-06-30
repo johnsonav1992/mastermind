@@ -12,6 +12,6 @@ export const pegColors = {
 export const colorNames = Object.keys(pegColors) as PegColors[];
 
 export const feedbackPegColors = {
-	correctColorAndPosition: '#000000',
-	correctColorWrongPosition: '#FFFFFF'
+	correctColorAndPosition: pegColors.black,
+	correctColorWrongPosition: pegColors.white
 };
