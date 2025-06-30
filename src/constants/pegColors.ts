@@ -1,3 +1,5 @@
+import type { PegColors } from '../types/types';
+
 export const pegColors = {
 	blue: '#207bae',
 	red: '#c81a38',
@@ -6,6 +8,8 @@ export const pegColors = {
 	black: '#000000',
 	white: '#FFFFFF'
 };
+
+export const colorNames = Object.keys(pegColors) as PegColors[];
 
 export const feedbackPegColors = {
 	correctColorAndPosition: '#000000',

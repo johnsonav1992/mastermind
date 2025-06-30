@@ -1,20 +1,14 @@
-import { pegColors } from '../../constants/pegColors';
+import { colorNames, pegColors } from '../../constants/pegColors';
 import { css } from '../../../styled-system/css';
 import type { PegColors } from '../../types/types';
 import { pegStyle } from '../../styles/globalStyles';
 import type { DragEvent } from 'react';
 
-const colorNames = Object.keys(pegColors) as PegColors[];
+const PegBucket = () => {
+	const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
+		e.dataTransfer.setData('pegColor', color);
+	};
 
-interface PegBucketProps {
-	onPegSelect?: (color: PegColors) => void;
-}
-
-const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
-	e.dataTransfer.setData('pegColor', color);
-};
-
-const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 	return (
 		<div
 			className={css({
@@ -47,7 +41,6 @@ const PegBucket = ({ onPegSelect }: PegBucketProps) => {
 						key={color}
 						className={pegStyle}
 						style={{ backgroundColor: pegColors[color] }}
-						onClick={() => onPegSelect?.(color)}
 						onDragStart={(e) => handleDragStart(e, color)}
 						draggable
 					/>

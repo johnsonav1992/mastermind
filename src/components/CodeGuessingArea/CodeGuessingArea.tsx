@@ -19,6 +19,7 @@ import {
 	compareGuessedCodeToSecretCode,
 	getFeedbackPegsForCurrentGuessingRow
 } from '../../utils/secretCodeUtils';
+import type { DragEvent, DragEventHandler } from 'react';
 
 const CodeGuessingArea = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
@@ -29,13 +30,13 @@ const CodeGuessingArea = () => {
 	);
 	const secretCode = useAtomValue(secretCodeAtom);
 
-	const onDragOverPegHole: React.DragEventHandler = (e) => {
+	const onDragOverPegHole: DragEventHandler = (e) => {
 		e.preventDefault();
 		e.dataTransfer.dropEffect = 'move';
 	};
 
 	const onDropIntoPegHole = (
-		e: React.DragEvent<HTMLDivElement>,
+		e: DragEvent<HTMLDivElement>,
 		rowIndex: number,
 		pegIndex: number
 	) => {
