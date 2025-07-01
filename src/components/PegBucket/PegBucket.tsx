@@ -3,10 +3,79 @@ import { css } from '../../../styled-system/css';
 import type { PegColors } from '../../types/types';
 import { pegStyle } from '../../styles/globalStyles';
 import type { DragEvent } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import { 
+	playerRowsAtom, 
+	activeGuessingRowIndexAtom,
+	gameStateAtom,
+	feedbackRowsAtom,
+	secretCodeAtom
+} from '../../state/atoms';
+import {
+	checkGameState,
+	compareGuessedCodeToSecretCode,
+	getFeedbackPegsForCurrentGuessingRow
+} from '../../utils/secretCodeUtils';
 
 const PegBucket = () => {
+	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
+	const [, setFeedbackRows] = useAtom(feedbackRowsAtom);
+	const [gameState, setGameState] = useAtom(gameStateAtom);
+	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(activeGuessingRowIndexAtom);
+	const secretCode = useAtomValue(secretCodeAtom);
+
 	const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
 		e.dataTransfer.setData('pegColor', color);
+	};
+
+	const handlePegTap = (color: PegColors) => {
+		// Only allow placement if game is playing and there's an active row
+		if (gameState !== 'playing' || activeGuessingRowIndex < 0) {
+			return;
+		}
+
+		const currentRow = playerRows[activeGuessingRowIndex];
+		const nextEmptyPegIndex = currentRow.findIndex(peg => !peg.isFilled);
+		
+		// If no empty pegs in current row, do nothing
+		if (nextEmptyPegIndex === -1) {
+			return;
+		}
+
+		setPlayerRows((prevRows) => {
+			const updatedRows = prevRows.map((row, rIndex) =>
+				rIndex === activeGuessingRowIndex
+					? row.map((peg, pIndex) =>
+							pIndex === nextEmptyPegIndex ? { ...peg, color, isFilled: true } : peg
+						)
+					: row
+			);
+
+			const updatedCurrentRow = updatedRows[activeGuessingRowIndex];
+			const isRowComplete = updatedCurrentRow.every((peg) => peg.isFilled);
+
+			if (isRowComplete) {
+				setActiveGuessingRowIndex(activeGuessingRowIndex - 1);
+
+				const howdYaDo = compareGuessedCodeToSecretCode(updatedCurrentRow, secretCode);
+				const didYaWinOrLoseYet = checkGameState(
+					howdYaDo,
+					activeGuessingRowIndex
+				);
+
+				setGameState(didYaWinOrLoseYet);
+
+				setFeedbackRows((prevFeedbackRows) =>
+					prevFeedbackRows.map((row, rIndex) =>
+						rIndex === activeGuessingRowIndex
+							? getFeedbackPegsForCurrentGuessingRow(howdYaDo)
+							: row
+					)
+				);
+			}
+
+			return updatedRows;
+		});
 	};
 
 	return (
@@ -39,9 +108,21 @@ const PegBucket = () => {
 				{colorNames.map((color) => (
 					<div
 						key={color}
-						className={pegStyle}
+						className={`${pegStyle} ${css({
+							cursor: 'pointer',
+							transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+							_hover: {
+								transform: 'scale(1.05)',
+								boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+							},
+							_active: {
+								transform: 'scale(0.95)',
+								boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+							}
+						})}`}
 						style={{ backgroundColor: pegColors[color] }}
 						onDragStart={(e) => handleDragStart(e, color)}
+						onClick={() => handlePegTap(color)}
 						draggable
 					/>
 				))}
