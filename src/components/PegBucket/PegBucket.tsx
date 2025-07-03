@@ -4,8 +4,8 @@ import type { PegColors } from '../../types/types';
 import { pegStyle } from '../../styles/globalStyles';
 import type { DragEvent } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { 
-	playerRowsAtom, 
+import {
+	playerRowsAtom,
 	activeGuessingRowIndexAtom,
 	gameStateAtom,
 	feedbackRowsAtom,
@@ -21,7 +21,9 @@ const PegBucket = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
 	const [, setFeedbackRows] = useAtom(feedbackRowsAtom);
 	const [gameState, setGameState] = useAtom(gameStateAtom);
-	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(activeGuessingRowIndexAtom);
+	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(
+		activeGuessingRowIndexAtom
+	);
 	const secretCode = useAtomValue(secretCodeAtom);
 
 	const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
@@ -29,24 +31,20 @@ const PegBucket = () => {
 	};
 
 	const handlePegTap = (color: PegColors) => {
-		// Only allow placement if game is playing and there's an active row
-		if (gameState !== 'playing' || activeGuessingRowIndex < 0) {
-			return;
-		}
+		if (gameState !== 'playing' || activeGuessingRowIndex < 0) return;
 
 		const currentRow = playerRows[activeGuessingRowIndex];
-		const nextEmptyPegIndex = currentRow.findIndex(peg => !peg.isFilled);
-		
-		// If no empty pegs in current row, do nothing
-		if (nextEmptyPegIndex === -1) {
-			return;
-		}
+		const nextEmptyPegIndex = currentRow.findIndex((peg) => !peg.isFilled);
+
+		if (nextEmptyPegIndex === -1) return;
 
 		setPlayerRows((prevRows) => {
 			const updatedRows = prevRows.map((row, rIndex) =>
 				rIndex === activeGuessingRowIndex
 					? row.map((peg, pIndex) =>
-							pIndex === nextEmptyPegIndex ? { ...peg, color, isFilled: true } : peg
+							pIndex === nextEmptyPegIndex
+								? { ...peg, color, isFilled: true }
+								: peg
 						)
 					: row
 			);
@@ -57,7 +55,10 @@ const PegBucket = () => {
 			if (isRowComplete) {
 				setActiveGuessingRowIndex(activeGuessingRowIndex - 1);
 
-				const howdYaDo = compareGuessedCodeToSecretCode(updatedCurrentRow, secretCode);
+				const howdYaDo = compareGuessedCodeToSecretCode(
+					updatedCurrentRow,
+					secretCode
+				);
 				const didYaWinOrLoseYet = checkGameState(
 					howdYaDo,
 					activeGuessingRowIndex

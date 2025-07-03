@@ -34,7 +34,9 @@ function App() {
 					borderRadius: '10px',
 					border: '3px solid #3a1d0d',
 					transform: { base: 'rotate(-1deg)', md: 'rotate(-2deg)' },
-					maxWidth: '90%'
+					maxWidth: '90%',
+					display:
+						gameState === 'playing' ? { base: 'none', md: 'block' } : 'block'
 				})}
 			>
 				Mastermind

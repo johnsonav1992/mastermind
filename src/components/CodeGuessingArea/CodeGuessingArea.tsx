@@ -13,7 +13,11 @@ import {
 	secretCodeAtom
 } from '../../state/atoms';
 import type { PegColors } from '../../types/types';
-import { feedbackPegColors, pegColors } from '../../constants/pegColors';
+import {
+	feedbackPegColors,
+	pegColors,
+	colorNames
+} from '../../constants/pegColors';
 import {
 	checkGameState,
 	compareGuessedCodeToSecretCode,
@@ -79,6 +83,30 @@ const CodeGuessingArea = () => {
 		});
 	};
 
+	const handlePegClick = (rowIndex: number, pegIndex: number) => {
+		if (gameState !== 'playing' || rowIndex !== activeGuessingRowIndex) return;
+
+		const peg = playerRows[rowIndex][pegIndex];
+
+		if (!peg.isFilled) return;
+
+		const currentColorIndex = colorNames.indexOf(peg.color);
+		const nextColorIndex = (currentColorIndex + 1) % colorNames.length;
+		const nextColor = colorNames[nextColorIndex];
+
+		setPlayerRows((prevRows) => {
+			const updatedRows = prevRows.map((row, rIndex) =>
+				rowIndex === rIndex
+					? row.map((p, pIndex) =>
+							pegIndex === pIndex ? { ...p, color: nextColor } : p
+						)
+					: row
+			);
+
+			return updatedRows;
+		});
+	};
+
 	return (
 		<>
 			{playerRows.map((row, rowIndex) => (
@@ -137,28 +165,35 @@ const CodeGuessingArea = () => {
 							paddingLeft: '4px'
 						})}
 					>
-						{row.map((peg, pegIndex) => (
-							<div
-								key={pegIndex}
-								className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle} ${css(
-									{
-										_hover: {
-											cursor: 'default !important',
-											boxShadow:
-												'inset 0 0 3px #000, 0 1px 2px #222, 3px 3px 6px rgba(0, 0, 0, 0.5) !important',
-											transform: 'none !important',
-											transition: 'none !important'
+						{row.map((peg, pegIndex) => {
+							const isClickable =
+								peg.isFilled &&
+								rowIndex === activeGuessingRowIndex &&
+								gameState === 'playing';
+
+							return (
+								<div
+									key={pegIndex}
+									className={`${pegStyle} ${peg.isFilled ? '' : emptyPegStyle} ${css(
+										{
+											cursor: isClickable ? 'pointer' : 'default',
+											_hover: {
+												cursor: isClickable ? 'pointer' : 'default',
+												transform: 'none',
+												boxShadow:
+													'inset 0 0 3px #000, 0 1px 2px #222, 3px 3px 6px rgba(0, 0, 0, 0.5)'
+											}
 										}
-									}
-								)}`}
-								style={{
-									backgroundColor: pegColors[peg.color],
-									cursor: 'default'
-								}}
-								onDragOver={onDragOverPegHole}
-								onDrop={(e) => onDropIntoPegHole(e, rowIndex, pegIndex)}
-							/>
-						))}
+									)}`}
+									style={{
+										backgroundColor: pegColors[peg.color]
+									}}
+									onDragOver={onDragOverPegHole}
+									onDrop={(e) => onDropIntoPegHole(e, rowIndex, pegIndex)}
+									onClick={() => handlePegClick(rowIndex, pegIndex)}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			))}
