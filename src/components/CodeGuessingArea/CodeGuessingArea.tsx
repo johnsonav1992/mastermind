@@ -236,7 +236,7 @@ const CodeGuessingArea = () => {
 									height: '24px',
 									borderRadius: '50%',
 									backgroundColor: '#22c55e',
-									display: { base: 'flex', md: 'none' },
+									display: 'flex',
 									alignItems: 'center',
 									justifyContent: 'center',
 									color: 'white',
