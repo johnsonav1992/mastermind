@@ -107,6 +107,28 @@ const CodeGuessingArea = () => {
 		});
 	};
 
+	const handleSubmitRow = (rowIndex: number) => {
+		const currentRow = playerRows[rowIndex];
+		const isRowComplete = currentRow.every((peg) => peg.isFilled);
+
+		if (!isRowComplete) return;
+
+		setActiveGuessingRowIndex(rowIndex - 1);
+
+		const howdYaDo = compareGuessedCodeToSecretCode(currentRow, secretCode);
+		const didYaWinOrLoseYet = checkGameState(howdYaDo, activeGuessingRowIndex);
+
+		setGameState(didYaWinOrLoseYet);
+
+		setFeedbackRows((prevFeedbackRows) =>
+			prevFeedbackRows.map((row, rIndex) =>
+				rIndex === rowIndex
+					? getFeedbackPegsForCurrentGuessingRow(howdYaDo)
+					: row
+			)
+		);
+	};
+
 	return (
 		<>
 			{playerRows.map((row, rowIndex) => (
@@ -123,7 +145,8 @@ const CodeGuessingArea = () => {
 						pointerEvents:
 							rowIndex !== activeGuessingRowIndex || gameState !== 'playing'
 								? 'none'
-								: 'auto'
+								: 'auto',
+						position: 'relative'
 					})}
 					key={rowIndex}
 				>
@@ -195,6 +218,44 @@ const CodeGuessingArea = () => {
 							);
 						})}
 					</div>
+					{(() => {
+						const isRowComplete = row.every((peg) => peg.isFilled);
+						const isActiveRow = rowIndex === activeGuessingRowIndex;
+						const shouldShowSubmit =
+							isRowComplete && isActiveRow && gameState === 'playing';
+
+						return shouldShowSubmit ? (
+							<div
+								className={css({
+									position: 'absolute',
+									top: '50%',
+									right: '-35px',
+									transform: 'translate(50%, -50%)',
+									pointerEvents: 'auto',
+									width: '24px',
+									height: '24px',
+									borderRadius: '50%',
+									backgroundColor: '#22c55e',
+									display: { base: 'flex', md: 'none' },
+									alignItems: 'center',
+									justifyContent: 'center',
+									color: 'white',
+									fontSize: '14px',
+									cursor: 'pointer',
+									transition: 'transform 0.1s ease',
+									_hover: {
+										transform: 'translate(50%, -50%) scale(1.1)'
+									},
+									_active: {
+										transform: 'translate(50%, -50%) scale(0.95)'
+									}
+								})}
+								onClick={() => handleSubmitRow(rowIndex)}
+							>
+								✓
+							</div>
+						) : null;
+					})()}
 				</div>
 			))}
 		</>

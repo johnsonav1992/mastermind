@@ -7,24 +7,13 @@ import { useAtom, useAtomValue } from 'jotai';
 import {
 	playerRowsAtom,
 	activeGuessingRowIndexAtom,
-	gameStateAtom,
-	feedbackRowsAtom,
-	secretCodeAtom
+	gameStateAtom
 } from '../../state/atoms';
-import {
-	checkGameState,
-	compareGuessedCodeToSecretCode,
-	getFeedbackPegsForCurrentGuessingRow
-} from '../../utils/secretCodeUtils';
 
 const PegBucket = () => {
 	const [playerRows, setPlayerRows] = useAtom(playerRowsAtom);
-	const [, setFeedbackRows] = useAtom(feedbackRowsAtom);
-	const [gameState, setGameState] = useAtom(gameStateAtom);
-	const [activeGuessingRowIndex, setActiveGuessingRowIndex] = useAtom(
-		activeGuessingRowIndexAtom
-	);
-	const secretCode = useAtomValue(secretCodeAtom);
+	const gameState = useAtomValue(gameStateAtom);
+	const activeGuessingRowIndex = useAtomValue(activeGuessingRowIndexAtom);
 
 	const handleDragStart = (e: DragEvent<HTMLDivElement>, color: PegColors) => {
 		e.dataTransfer.setData('pegColor', color);
@@ -48,32 +37,6 @@ const PegBucket = () => {
 						)
 					: row
 			);
-
-			const updatedCurrentRow = updatedRows[activeGuessingRowIndex];
-			const isRowComplete = updatedCurrentRow.every((peg) => peg.isFilled);
-
-			if (isRowComplete) {
-				setActiveGuessingRowIndex(activeGuessingRowIndex - 1);
-
-				const howdYaDo = compareGuessedCodeToSecretCode(
-					updatedCurrentRow,
-					secretCode
-				);
-				const didYaWinOrLoseYet = checkGameState(
-					howdYaDo,
-					activeGuessingRowIndex
-				);
-
-				setGameState(didYaWinOrLoseYet);
-
-				setFeedbackRows((prevFeedbackRows) =>
-					prevFeedbackRows.map((row, rIndex) =>
-						rIndex === activeGuessingRowIndex
-							? getFeedbackPegsForCurrentGuessingRow(howdYaDo)
-							: row
-					)
-				);
-			}
 
 			return updatedRows;
 		});
